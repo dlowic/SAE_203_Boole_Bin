@@ -1,0 +1,13 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Dossier de configuration VS Code
+.vscode/
+
+# Dossiers temporaires
+tmp/
+temp/
+
+# Si tu as des fichiers de config avec des mots de passe réels (pas le cas ici avec root/vide)
+# config.php

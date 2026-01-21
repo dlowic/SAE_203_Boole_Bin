@@ -1,0 +1,784 @@
+/* --- 1. CHARGEMENT DE TA POLICE --- */
+@font-face {
+    font-family: 'EcritureCraie';
+    /* Le chemin remonte d'un dossier (..) puis va dans police */
+    src: url('../police/FrozencaScriptTypeface.ttf') format('truetype');
+}
+
+/* --- 2. RESET & GLOBAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* Image de fond fixe qui couvre tout l'écran sans se répéter */
+    background-image: url("../img/tableau3.webp");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* L'image ne bouge pas quand on scrolle */
+    background-size: cover;       /* L'image s'étire pour tout remplir */
+    
+    /* Typographie */
+    font-family: 'Arial', sans-serif; /* Police par défaut pour la lisibilité */
+    color: #ffffff; /* Texte BLANC par défaut (effet craie) */
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3 {
+    /* On utilise ta police spéciale pour les titres */
+    font-family: 'EcritureCraie', 'Arial', cursive;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Ombre pour mieux lire */
+}
+
+a {
+    color: #f1c40f; /* Une couleur "jaune craie" pour les liens */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* --- 3. HEADER (Texture bois) --- */
+header {
+    background-image: url("../img/heade.webp");
+    background-size: cover;
+    background-position: center;
+    padding: 10px 30px; /* Un peu plus d'espace sur les côtés */
+    
+    /* C'est ici que la magie opère pour l'alignement */
+    display: flex;
+    flex-wrap: wrap; 
+    align-items: center; /* Centre verticalement (haut/bas) */
+    justify-content: space-between; /* Pousse le logo à gauche et le menu à droite */
+    
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border-bottom: 5px solid #5d4037;
+    position: relative; /* Important pour le responsive */
+}
+
+.titre {
+    display: flex;
+    align-items: center;
+}
+
+.titre h1 {
+    font-size: 2.2rem;
+    margin: 0;
+    line-height: 1; /* Évite que le titre prenne trop de hauteur inutile */
+}
+
+/* Navigation */
+.liste-horizontale {
+    /* Si le menu est trop grand, il ne cassera pas le layout */
+    flex-grow: 1; 
+    display: flex;
+    justify-content: flex-end; /* Pousse tout le contenu du menu vers la droite */
+}
+
+.liste-horizontale ul {
+    display: flex;
+    list-style: none;
+    gap: 15px; /* Espace entre chaque lien */
+    padding: 0;
+    margin: 0;
+    align-items: center; /* Centre les liens et le badge verticalement */
+}
+
+.liste-horizontale a {
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 12px;
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 5px;
+    white-space: nowrap; /* Empêche les textes de se couper */
+}
+
+.liste-horizontale a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px); /* Petit effet de saut au survol */
+}
+/* --- 4. MAIN & GRILLE D'ARTICLES --- */
+main {
+    flex: 1; /* Pousse le footer vers le bas */
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 1200px; /* Empêche le contenu d'être trop large */
+    margin: 0 auto;    /* Centre le contenu */
+}
+
+/* Grille Responsive pour l'accueil */
+.accueil-grid {
+    display: grid;
+    /* Création de colonnes auto-adaptables (minimum 300px de large) */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+/* Les cartes articles */
+.article {
+    background-color: rgba(255, 255, 255, 0.95); /* Blanc quasi opaque */
+    border-radius: 4px; /* Coins légèrement arrondis */
+    padding: 15px;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    border: 1px solid #ddd;
+    
+    /* Pour ressembler à une feuille de papier posée sur le tableau */
+    transform: rotate(-1deg); 
+}
+
+/* Un article sur deux est penché de l'autre côté pour le style */
+.article:nth-child(even) {
+    transform: rotate(1deg);
+}
+
+.article:hover {
+    transform: scale(1.05) rotate(0deg); /* Zoom et redressement au survol */
+    z-index: 10;
+}
+
+/* IMPORTANT : Le texte DANS les cartes blanches doit être NOIR */
+.article h2 {
+    color: #2c3e50;
+    font-family: 'Arial', sans-serif; /* Titres lisibles sur papier */
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    text-shadow: none;
+}
+
+.article p {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.article a {
+    color: inherit; /* Le lien prend la couleur du texte parent */
+}
+
+.illustration {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+/* --- 5. PAGE DETAIL ARTICLE (Effet Craie Réaliste) --- */
+
+.article-detail {
+    background-color: transparent; 
+    padding: 40px;
+    margin: 20px auto;
+    
+    /* MODIFICATION ICI : Épaisseur passée à 8px et opacité augmentée à 0.8 */
+    border: 8px solid rgba(255, 255, 255, 0.85);
+    
+    /* Forme irrégulière "dessinée à la main" */
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    
+    /* Ombre un peu plus large pour suivre le trait épais */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); 
+}
+
+.article-detail h1 {
+    font-family: 'EcritureCraie', cursive; 
+    font-size: 4rem; 
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 30px;
+    
+    /* Effet craie sur le texte */
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.3), 0 0 8px rgba(255,255,255,0.6);
+    
+    /* Ligne de soulignement plus épaisse aussi */
+    border-bottom: 4px solid rgba(255,255,255,0.6);
+    padding-bottom: 15px;
+    
+    /* Légère rotation du titre pour le style */
+    transform: rotate(-2deg);
+}
+
+.article-detail .contenu {
+    /* Police lisible mais style "cahier" */
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
+    
+    font-size: 1.4rem; /* Encore un peu plus gros */
+    line-height: 1.8;
+    color: #fcfcfc;
+    text-align: justify;
+    text-shadow: 0 0 1px rgba(255,255,255, 0.6);
+    
+    /* Petit fond sombre très léger derrière le texte pour aider la lecture */
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* L'image dans l'article (si présente) */
+.illustration-detail {
+    display: block;
+    max-width: 80%;
+    margin: 20px auto;
+    border: 5px solid white; /* Cadre photo polaroid blanc */
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+    transform: rotate(2deg); /* On la penche un peu aussi ! */
+}
+
+
+/* --- 6. PAGE DE CONNEXION & INSCRIPTION (Version XL & Centrée) --- */
+
+/* 1. Le Wrapper qui force le centrage par-dessus la grille */
+.login-wrapper {
+    /* Cette astuce permet de prendre toute la largeur de la grille existante */
+    grid-column: 1 / -1; 
+    width: 100%;
+    min-height: 80vh; /* Prend 80% de la hauteur de l'écran */
+    
+    /* Centrage FLEXBOX */
+    display: flex;
+    justify-content: center; /* Horizontal */
+    align-items: center;     /* Vertical */
+}
+
+/* 2. La boîte du formulaire (Agrandie) */
+.login-container {
+    width: 100%;
+    /* J'ai passé la largeur de 500px à 800px pour le rendre GRAND */
+    max-width: 800px; 
+    
+    /* Fond transparent sombre */
+    background-color: rgba(0, 0, 0, 0.4);
+    
+    /* Cadre craie ÉPAIS */
+    border: 8px solid rgba(255, 255, 255, 0.85);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    padding: 50px; /* Plus d'espace à l'intérieur */
+    color: white;
+}
+
+/* Les onglets */
+.tabs {
+    display: flex;
+    border-bottom: 4px dashed rgba(255,255,255,0.4);
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+.tabs a {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.tabs button {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-family: 'EcritureCraie', cursive;
+    /* Police agrandie pour les onglets */
+    font-size: 2.5rem; 
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tabs button.active {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255,255,255,0.9);
+    transform: scale(1.1);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+}
+
+/* Les champs (Inputs) - Version XL */
+.form input {
+    width: 100%;
+    padding: 20px 15px; /* Plus d'espace pour écrire */
+    margin-bottom: 30px; /* Plus d'espace entre les champs */
+    
+    background: transparent;
+    border: none;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.7);
+    border-radius: 0; 
+    
+    font-family: 'Comic Sans MS', sans-serif;
+    color: white;
+    /* Texte beaucoup plus gros */
+    font-size: 1.8rem; 
+    transition: border-color 0.3s;
+}
+
+.form input:focus {
+    outline: none;
+    border-bottom-color: #f1c40f;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.form input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.5rem;
+}
+
+/* Le bouton VALIDER - Version XL */
+.form button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background: transparent;
+    border: 5px solid #f1c40f;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    
+    color: #f1c40f;
+    font-family: 'EcritureCraie', cursive;
+    /* Texte du bouton énorme */
+    font-size: 3rem; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form button:hover {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: #fff;
+    transform: rotate(-2deg) scale(1.05);
+}
+/* --- 7. FOOTER (Texture bois) --- */
+footer {
+    background-image: url("../img/heade.webp"); /* Même bois que header */
+    background-size: cover;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    border-top: 5px solid #5d4037;
+    margin-top: auto;
+}
+/* --- 8. SECTION COMMENTAIRES (Style Craie & École) --- */
+
+.commentaires-section {
+    margin-top: 50px;
+    padding-top: 20px;
+    /* Une ligne de séparation en pointillés style "craie" */
+    border-top: 4px dashed rgba(255, 255, 255, 0.5);
+}
+
+.commentaires-section h3 {
+    font-family: 'EcritureCraie', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #fff;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+}
+
+/* Le formulaire d'écriture */
+.commentaires-section form textarea {
+    background: rgba(255, 255, 255, 0.1); /* Fond transparent sombre */
+    border: 3px solid rgba(255, 255, 255, 0.7); /* Bordure blanche épaisse */
+    color: white; /* Texte blanc quand tu écris */
+    font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Changer la couleur du texte "placeholder" (le texte d'aide) */
+.commentaires-section form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+/* Les commentaires postés */
+.com {
+    /* Fond noir très léger pour détacher le commentaire du fond vert */
+    background-color: rgba(0, 0, 0, 0.2);
+    
+    /* Une barre verticale sur le côté comme une annotation */
+    border-left: 5px solid #f1c40f; /* Jaune craie */
+    
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 0 15px 15px 0; /* Arrondi seulement à droite */
+    
+    font-family: 'Comic Sans MS', sans-serif;
+    color: #f0f0f0;
+    font-size: 1.1rem;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Le nom de la personne qui a commenté */
+.com strong {
+    color: #f1c40f; /* Jaune */
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'EcritureCraie', cursive; /* Nom en écriture manuscrite */
+    text-decoration: underline;
+}
+/* --- 9. STYLE UTILISATEUR (Connecté) --- */
+
+/* Le conteneur du profil */
+.user-badge {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 5px 15px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center; /* Très important pour centrer le texte et la croix */
+    gap: 10px;
+    margin-left: 15px; /* Décale le badge un peu plus loin des liens */
+    height: 40px; /* Force une hauteur pour qu'il soit aligné avec les boutons */
+}
+
+/* "Bonjour," */
+.label-connecte {
+    font-size: 0.8rem;
+    color: #ccc;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Le Pseudo (Style Craie Jaune) */
+.pseudo-style {
+    font-family: 'EcritureCraie', cursive;
+    color: #f1c40f; /* Jaune */
+    font-size: 1.2rem;
+    text-transform: capitalize;
+}
+
+/* Le bouton Déconnexion (Croix Rouge) */
+.btn-logout {
+    color: #ff0000 !important; /* ROUGE VIF FORCÉ */
+    background: transparent !important;
+    border: none;
+    font-weight: bold;
+    font-size: 1.4rem !important;
+    text-decoration: none;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.btn-logout:hover {
+    transform: scale(1.3); /* Grossit au survol */
+    color: #ff4444 !important; /* Rouge un peu plus clair au survol */
+}
+
+/* Bouton Connexion (Vert) */
+.btn-login {
+    background-color: #27ae60 !important;
+    border: 1px solid white;
+}
+
+/* --- 10. RESPONSIVE DESIGN (Mobile & Tablette) --- */
+
+/* On cache le bouton burger sur PC */
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+}
+
+/* TABLETTES ET MOBILES (Écrans < 900px) */
+@media screen and (max-width: 900px) {
+    
+    /* Le Header passe en colonne */
+    header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .titre {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    /* Le Menu */
+    .liste-horizontale ul {
+        flex-wrap: wrap; /* Les liens passent à la ligne si besoin */
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .liste-horizontale a {
+        font-size: 0.9rem; /* Texte plus petit */
+        padding: 8px;
+    }
+
+    /* Ajustement des gros titres Craie sur mobile */
+    .article-detail h1 {
+        font-size: 2.5rem; /* On réduit la taille énorme */
+    }
+    
+    .article-detail {
+        padding: 20px; /* Moins de marge interne */
+        border-width: 4px; /* Trait moins épais sur mobile */
+    }
+}
+
+/* SMARTPHONES (Écrans < 600px) */
+@media screen and (max-width: 600px) {
+    
+    /* On empile tout verticalement */
+    .liste-horizontale ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .liste-horizontale li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .liste-horizontale a, .user-badge {
+        display: block;
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Ajustement de la grille d'accueil */
+    .accueil-grid {
+        grid-template-columns: 1fr; /* Une seule colonne */
+    }
+    
+    /* Login tabs */
+    .tabs button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+/* --- 11. STYLE LIEN CONNEXION DANS COMMENTAIRES --- */
+
+/* Le conteneur du message (probablement un <p>) */
+.commentaires-section p {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7); /* Blanc un peu effacé */
+    margin-top: 20px;
+}
+
+/* Le lien "Connectez-vous" */
+.commentaires-section a[href*="login"] {
+    font-family: 'EcritureCraie', cursive; /* Ta police spéciale */
+    color: #f1c40f; /* Jaune craie */
+    font-size: 2rem; /* Gros texte */
+    text-decoration: none;
+    
+    /* Soulignement irrégulier style craie */
+    border-bottom: 3px dashed rgba(241, 196, 15, 0.6);
+    padding-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+/* Au survol du lien */
+.commentaires-section a[href*="login"]:hover {
+    color: #ffffff; /* Devient blanc */
+    border-bottom-color: #ffffff;
+    border-bottom-style: solid; /* Le soulignement devient solide */
+    text-shadow: 0 0 10px rgba(255,255,255,0.8); /* Petit effet lumineux */
+    transform: scale(1.1); /* Grossit un peu */
+}
+
+/* Style pour les messages d'erreur du formulaire (ajouté dans le PHP plus haut) */
+.error-chalk {
+    color: #ff6b6b; /* Rouge pastel */
+    font-family: 'EcritureCraie', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    animation: shake 0.5s; /* Petite secousse si erreur */
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+/* --- 12. BOUTON COMMENTAIRE (Style Craie) --- */
+
+.commentaires-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Met le bouton à droite */
+}
+
+.btn-craie {
+    background: transparent;
+    
+    /* Bordure Jaune Craie */
+    border: 3px solid #f1c40f; 
+    
+    /* Forme irrégulière */
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    
+    color: #f1c40f;
+    font-family: 'EcritureCraie', cursive; /* Ta police spéciale */
+    font-size: 1.8rem;
+    padding: 10px 30px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-craie:hover {
+    background-color: rgba(241, 196, 15, 0.2); /* Fond jaune transparent */
+    color: #fff; /* Le texte devient blanc */
+    transform: rotate(-2deg) scale(1.1); /* Petit effet dynamique */
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.4); /* Lueur jaune */
+}
+/* --- 13. NOUVELLES FONCTIONNALITÉS & CORRECTIFS --- */
+
+.section-title {
+    font-family: 'EcritureCraie', cursive;
+    font-size: 3rem;
+    color: white;
+    text-align: center;
+    margin: 40px 0;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-bottom: 2px dashed rgba(255,255,255,0.3);
+    padding-bottom: 10px;
+}
+
+/* Style succès/erreur */
+.success-chalk {
+    border: 2px solid #2ecc71;
+    color: #2ecc71;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-family: 'EcritureCraie', cursive;
+    text-align: center;
+    background: rgba(46, 204, 113, 0.1);
+}
+.error-chalk {
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 15px;
+    font-family: 'EcritureCraie', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 15px;
+    background: rgba(255, 107, 107, 0.1);
+}
+
+/* --- STYLE DES CARTES COMMUNAUTÉ --- */
+.community-card {
+    border: 3px dashed #f1c40f !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.badge-comm {
+    background: #f1c40f;
+    color: #333;
+    font-weight: bold;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.date-comm {
+    font-size: 0.85rem;
+    color: #777;
+    font-style: italic;
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- LE TAMPON "APPROUVÉ" (RETOUR AU STYLE D'AVANT) --- */
+.article-detail {
+    position: relative !important;
+}
+
+.stamp-approved {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    border: 5px solid #27ae60;
+    color: #27ae60;
+    font-size: 1.8rem;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px 20px;
+    transform: rotate(-15deg);
+    
+    /* RETOUR AU FOND TRANSPARENT (Style d'avant) */
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.1); 
+    
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+/* --- NOUVEAU : STYLE INFOS ARTICLE (Page Détail) --- */
+.article-infos {
+    text-align: center;
+    margin-top: -20px; /* On le remonte un peu sous le titre */
+    margin-bottom: 30px;
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
+    color: #ccc; /* Gris clair */
+    font-size: 1rem;
+    border-bottom: 1px dotted rgba(255,255,255,0.3);
+    padding-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espace entre auteur et date */
+}
+
+.article-infos strong {
+    color: #f1c40f; /* Pseudo en jaune */
+    font-family: 'EcritureCraie', cursive;
+    font-size: 1.2rem;
+}
+
+/* --- FIX HAUTEUR CARTES --- */
+.accueil-grid { align-items: stretch; }
+.article { height: 100%; display: flex; flex-direction: column; }
+.article a { display: flex; flex-direction: column; height: 100%; color: inherit; text-decoration: none; }
+.card-body { flex-grow: 1; display: flex; flex-direction: column; }
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .stamp-approved {
+        font-size: 1rem;
+        top: 20px;
+        right: 20px;
+        border-width: 3px;
+        padding: 5px;
+    }
+    .article-infos {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
