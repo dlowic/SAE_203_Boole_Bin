@@ -14,7 +14,7 @@
 
 body {
     /* Image de fond fixe qui couvre tout l'écran sans se répéter */
-    background-image: url("../img/tableau3.webp");
+    background-image: url("../img/tableau4.webp");
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed; /* L'image ne bouge pas quand on scrolle */
